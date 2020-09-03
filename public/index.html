@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ChatCord</title>
+    <style>
+        .chat-box{
+            height: 80vh;
+            overflow-y: auto;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    Chit chat
+    <form action="/" id="login">
+        <input type="text" name="username" id="username">
+        <input type="text" id="room">
+        <button type="submit">Submit</button>
+    </form>
+    <div id="chat-box"></div>
+    <form action="/" id="sendMsg">
+        <input type="text" name="msg" id="msg">
+        <button type="submit">SendMsg</button>
+    </form>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="./index.js"></script>
+</body>
+</html>
