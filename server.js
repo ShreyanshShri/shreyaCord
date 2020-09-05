@@ -4,7 +4,10 @@ const express = require('express')
 const app = express()
 const moment = require('moment')
 const mongoose = require('mongoose')
+const bcrypt = require('bcrypt')
+const bodyParser = require('body-parser')
 const Message = require('./models/Message')
+const User = require('./models/User')
 
 
 mongoose.connect("mongodb://localhost/chatApp",
@@ -16,6 +19,8 @@ const server = http.createServer(app)
 const io = socketio(server)
 
 app.use(express.static('./public'))
+app.use(express.urlencoded({ extended: true }))
+app.use(bodyParser.json())
 
 var users = []
 
@@ -70,6 +75,9 @@ io.on('connection', socket => {
           });
     })
 
+    socket.on('sendMessage', ()=>{
+        console.log('This is working')
+    })
 
     // user disconnects
     socket.on('disconnect', () => {
@@ -84,11 +92,42 @@ io.on('connection', socket => {
     })
 })
 
-app.get('/test', (req, res) => {
-    res.json({working: 'true'})
+app.post('/register', async(req, res) => {
+    const {username, email, password} = req.body
+    const encryptedPass = await bcrypt.hash(password, 10)
+
+    const user = new User({
+        username,
+        email,
+        password: encryptedPass
+    })
+
+    try {
+        await user.save()
+        res.status(200).json({message: 'success... check your db'})
+    } catch (err) {
+        return res.json({message: 'server side error'})
+    }
 })
 
-const PORT = process.env.PORT || 3000;
+app.post('/login', async(req, res) => {
+    const {email, password} = req.body
+    
+    const user = await User.findOne({ email: email })
+
+    if(user) {
+        const check = await bcrypt.compare(password, user.password)
+        if(check) {
+            res.status(200).json({message: 'success'})
+        } else {
+            return res.status(400).json({message: 'Invalid Credientials'})
+        }
+    } else {
+        return res.status(400).json({message: 'User doesnt exists'})
+    }
+})
+
+const PORT = process.env.PORT || 5000;
 
 server.listen(PORT, () => console.log(`Server running on port ${PORT}`))
 
