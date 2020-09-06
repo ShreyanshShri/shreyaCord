@@ -13,6 +13,11 @@ import './App.css';
 function App() {
 
   const [redirect, setRedirect] = useState(false)
+  const [hasAuth, setAuth] = useState(false)
+  const [user, setUser] = useState({
+    username: null,
+    room: null
+  })
 
   const currUser = async(formData) => {
     const config = {
@@ -25,7 +30,11 @@ function App() {
       const res = await axios.post('/login', formData, config)
       console.log(res)
       if(res.status === 200) {
-        console.log('redirected')
+        setAuth(true)
+        setUser({
+          username: res.data.username,
+          room: formData.room
+        })
         setRedirect(true)
       } else {
         console.log('invalid credentials and plz add a alert for this')
@@ -58,7 +67,7 @@ function App() {
         <Switch>
           <Route exact path='/login' render={(props) => <Login {...props} redirect = { redirect } currUser = { currUser } />} />
           <Route exact path='/register' render={props => <Register {...props} registerUser = { registerUser }/> }/>
-          <Route exact path='/chat' component={ChatApp} />
+          <Route exact path='/chat' render= {props => <ChatApp {...props} hasAuth={hasAuth} user={user} />} />
         </Switch>
       </Router>
     </div>

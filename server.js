@@ -34,6 +34,7 @@ io.on('connection', socket => {
             room
         }
         users.push(user)
+
         socket.join(user.room)
         // welcoming
         io.to(user.room).emit('notify', 'Welcome to chatCord!')
@@ -44,25 +45,6 @@ io.on('connection', socket => {
         const oldMsgs = await Message.find({room : user.room})
         // sending old msgs from db (will run only once and will be sent to new user only)
         socket.emit('message', oldMsgs)
-
-        // sending a message
-        socket.on('sendMessage', async ({message, username}) =>{
-            const time = moment().format('h:mm a')
-            io.to(user.room).emit('message', {message, username, time})
-
-            // saving it to db
-            const msg = new Message({
-                message,
-                username,
-                time,
-                room:user.room
-            })
-            try {
-                await msg.save()
-            } catch (err) {
-                console.log(err.message)
-            }
-        })
 
         // sending room info
         const roomUsers = users.filter(u => {
@@ -75,8 +57,23 @@ io.on('connection', socket => {
           });
     })
 
-    socket.on('sendMessage', ()=>{
-        console.log('This is working')
+    // sending a message
+    socket.on('sendMessage', async ({message, username, room}) =>{
+        const time = moment().format('h:mm a')
+        io.to(room).emit('message', {message, username, time})
+
+        // saving it to db
+        const msg = new Message({
+            message,
+            username,
+            time,
+            room
+        })
+        try {
+            await msg.save()
+        } catch (err) {
+            console.log(err.message)
+        }
     })
 
     // user disconnects
@@ -118,7 +115,7 @@ app.post('/login', async(req, res) => {
     if(user) {
         const check = await bcrypt.compare(password, user.password)
         if(check) {
-            res.status(200).json({message: 'success'})
+            res.status(200).json(user)
         } else {
             return res.status(400).json({message: 'Invalid Credientials'})
         }

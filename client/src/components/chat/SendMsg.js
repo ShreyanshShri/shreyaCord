@@ -8,9 +8,8 @@ const SendMsg = ({ sendMsg }) => {
     }
     const onSubmit = event => {
         event.preventDefault()
-        console.log(msg)
-        setMessage('')
         sendMsg(msg)
+        setMessage('')
     }
     return (
         <div>

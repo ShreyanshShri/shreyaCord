@@ -33,7 +33,7 @@ const Login = ({currUser, redirect}) => {
                 <input type='text' placeholder='room' value={user.room} onChange={onChange} />
                 <button typoe='submit'>Submit</button>
             </form>
-            {redirect && <Redirect to={`/chat/?email=${user.email}&room=${user.room}`} />}
+            {redirect && <Redirect to={`/chat`} />}
         </div>
     )
 }
