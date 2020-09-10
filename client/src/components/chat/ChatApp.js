@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import io from 'socket.io-client'
+// import {Link} from 'react-router-dom'
 
 import RoomInfo from './RoomInfo'
 import Chats from './Chats'
@@ -10,8 +11,11 @@ let socket
 const ChatApp = ({hasAuth, user}) => {
     const {username, room} = user;
     const [messages, addMsg] = useState([])
-    socket = io('http://localhost:5000')
-    
+    const [currentRoom, setRoom] = useState(null)
+    const [roomUsers, setRoomUsers] = useState([])
+   socket = io('http://localhost:5000')
+
+
     // joining the user
     useEffect(() => {
         if(hasAuth) {
@@ -28,6 +32,15 @@ const ChatApp = ({hasAuth, user}) => {
         }
     })
 
+    socket.on('roomUsers', ({room, users}) => {
+        // console.log('got room info')
+        // console.log(room, users)
+        console.log('triggerd')
+        console.log(users)
+        setRoom(room)
+        setRoomUsers(users)
+    })
+
     const sendMsg = (message) => {
         const msg = {
             message,
@@ -36,10 +49,12 @@ const ChatApp = ({hasAuth, user}) => {
         }
         socket.emit('sendMessage', msg)
     }
+
     if(hasAuth){
         return (
             <div>
-                <RoomInfo />
+                <a href = '/'>Leave Room</a>
+                <RoomInfo currentRoom={currentRoom} roomUsers={roomUsers} />
                 <Chats messages = {messages} />
                 <SendMsg sendMsg ={sendMsg} />
             </div>

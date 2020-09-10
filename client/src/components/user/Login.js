@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import {Redirect} from 'react-router-dom'
+import {Redirect, Link} from 'react-router-dom'
 
 const Login = ({currUser, redirect}) => {
     const [user, setUser] = useState({
@@ -32,6 +32,7 @@ const Login = ({currUser, redirect}) => {
                 <input type='text' placeholder='password' value={user.password} onChange={onChange} />
                 <input type='text' placeholder='room' value={user.room} onChange={onChange} />
                 <button typoe='submit'>Submit</button>
+                <Link to='/register'>Or create a new Account</Link>
             </form>
             {redirect && <Redirect to={`/chat`} />}
         </div>

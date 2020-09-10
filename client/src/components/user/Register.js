@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import {Link} from 'react-router-dom'
 
 const Register = ({ registerUser }) => {
 
@@ -33,6 +34,7 @@ const Register = ({ registerUser }) => {
                 <input type='password' name='password' placeholder='Password' className='input' value={formData.password} onChange={onChange} required />
                 <button typoe='submit'>Submit</button>
             </form>
+            <Link to='/login'>Already have an acoount! Log In</Link>
         </div>
     )
 }

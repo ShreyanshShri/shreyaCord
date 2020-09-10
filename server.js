@@ -40,28 +40,29 @@ io.on('connection', socket => {
         io.to(user.room).emit('notify', 'Welcome to chatCord!')
         // notifying everyone
         socket.to(user.room).emit('notify', `${user.username} joined the chat`);
+        socket.emit('user-info', socket.id)
 
         // fetching data from db
         const oldMsgs = await Message.find({room : user.room})
         // sending old msgs from db (will run only once and will be sent to new user only)
         socket.emit('message', oldMsgs)
-
+        
         // sending room info
         const roomUsers = users.filter(u => {
             return user.room == u.room
         })
-
+        
         io.to(user.room).emit('roomUsers', {
             room: user.room,
             users: roomUsers
-          });
+        });
     })
 
     // sending a message
     socket.on('sendMessage', async ({message, username, room}) =>{
         const time = moment().format('h:mm a')
         io.to(room).emit('message', {message, username, time})
-
+        
         // saving it to db
         const msg = new Message({
             message,
@@ -76,16 +77,27 @@ io.on('connection', socket => {
         }
     })
 
-    // user disconnects
+    // user disconnects (closes the tab)
     socket.on('disconnect', () => {
-        let userLeft;
-        users = users.filter(user => {
-            if(user.id == socket.id) userLeft = user
-            return user.id != socket.id;
+        const index = users.findIndex(user => {
+            return user.id === socket.id
         })
-        // console.log(users)
-        // socket.emit(`${userLeft.username} left the Chat.`)
-        socket.emit('A user Left')
+
+        if(index !== -1) {
+            const user = users.splice(index, 1)[0]
+
+            if(user){
+                // sending room info
+                const roomUsers = users.filter(u => {
+                    return user.room == u.room
+                })
+                
+                io.to(user.room).emit('roomUsers', {
+                    room: user.room,
+                    users: roomUsers
+                });
+            }
+        }
     })
 })
 

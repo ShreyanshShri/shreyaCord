@@ -6,7 +6,7 @@ import Navbar from './layout/Navbar';
 import Login from './components/user/Login'
 import Register from './components/user/Register'
 import ChatApp from './components/chat/ChatApp'
-
+import WelcomeUser from './layout/WelcomeUser'
 
 import './App.css';
 
@@ -58,13 +58,15 @@ function App() {
     } catch (err) {
       console.log('A server error')
     }
-  }  
+  }
+  
 
   return (
     <div className="App">
       <Router>
         <Navbar />
         <Switch>
+          <Route exact path='/' component={WelcomeUser} />
           <Route exact path='/login' render={(props) => <Login {...props} redirect = { redirect } currUser = { currUser } />} />
           <Route exact path='/register' render={props => <Register {...props} registerUser = { registerUser }/> }/>
           <Route exact path='/chat' render= {props => <ChatApp {...props} hasAuth={hasAuth} user={user} />} />
