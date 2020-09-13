@@ -1,19 +1,21 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, Fragment } from 'react'
 import io from 'socket.io-client'
-// import {Link} from 'react-router-dom'
+import {Link} from 'react-router-dom'
 
 import RoomInfo from './RoomInfo'
 import Chats from './Chats'
-import SendMsg from './SendMsg'
 
 let socket
 
-const ChatApp = ({hasAuth, user}) => {
+const ChatApp = ({hasAuth, user, navPos}) => {
     const {username, room} = user;
     const [messages, addMsg] = useState([])
     const [currentRoom, setRoom] = useState(null)
+    const [darkTheme, setDarkTheme] = useState(false)
     const [roomUsers, setRoomUsers] = useState([])
-   socket = io('http://localhost:5000')
+    
+
+    socket = io('http://localhost:5000')
 
 
     // joining the user
@@ -22,7 +24,7 @@ const ChatApp = ({hasAuth, user}) => {
             socket.emit('joinRoom', { username, room })
         }
         // eslint-disable-next-line
-    }, [user])
+    }, [])
 
     socket.on('message', (message) => {
         if(Array.isArray(message)){
@@ -50,18 +52,35 @@ const ChatApp = ({hasAuth, user}) => {
         socket.emit('sendMessage', msg)
     }
 
+    const switchTheme = () => {
+        setDarkTheme(prevVal => !prevVal)
+        console.log(darkTheme)
+    }
+
+    let primaryTheme;
+    if(darkTheme) {
+        primaryTheme = 'dark-primary'
+    } else{
+        primaryTheme = 'light'
+    }
+
+
     if(hasAuth){
         return (
-            <div>
-                <a href = '/'>Leave Room</a>
-                <RoomInfo currentRoom={currentRoom} roomUsers={roomUsers} />
-                <Chats messages = {messages} />
-                <SendMsg sendMsg ={sendMsg} />
-            </div>
+            <Fragment>
+                {/* <button className='btn btn-outline-success' onClick={switchNav}>Switch</button>     */}
+                <div className={`container-less height-9 ${primaryTheme}`}>
+                <div className='row'>
+                    {/* <a href = '/'>Leave Room</a> */}
+                    <RoomInfo currentRoom={currentRoom} roomUsers={roomUsers} navPos = {navPos} darkTheme={darkTheme} switchTheme={switchTheme}/>
+                    <Chats messages = {messages} sendMsg ={sendMsg} darkTheme={darkTheme} />
+                </div>
+                </div>
+            </Fragment>
         )
     } else {
         return (
-            <h1>Login to continue...</h1>
+            <h1><Link to='/login' >Login</Link> to continue...</h1>
         )
     }
     

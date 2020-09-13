@@ -1,32 +1,26 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+// import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types' 
 
-const Navbar = ({title, icon}) => {
+const Navbar = ({title, icon, switchNav, isSmall}) => {
     return (
         <div>
-            <div className='navbar bg-primary'>
-            <h1>
-            <Link to='/'>
-                <i className={icon} /> {title}
-            </Link>
-            </h1>
-            <ul>
-                <li>
-                    <Link to='/login'>Login</Link>
-                </li>
-                <li>
-                    <Link to='/register'>Register</Link>
-                </li>
-            </ul>
-        </div>
+            <nav className="navbar navbar-dark bg-purple h-10">
+            <a className="navbar-brand" href="/">
+                <i className='fa fa-discord' />
+                <span style = {{fontSize:'130%'}} className='ml-2'>{title}</span>
+            </a>
+                {isSmall ? null : <button onClick={switchNav}>SwitchNav</button>}
+            </nav>
         </div>
     )
 }
 
 Navbar.propTypes = {
     title: PropTypes.string.isRequired,
-    icon: PropTypes.string
+    icon: PropTypes.string,
+    isSmall: PropTypes.bool.isRequired,
+    switchNav: PropTypes.func
   }
   
   Navbar.defaultProps = {

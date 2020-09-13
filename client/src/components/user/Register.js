@@ -25,17 +25,22 @@ const Register = ({ registerUser }) => {
             password: ''
         })
     }
-
+    // eslint-disable-next-line
     return (
-        <div>
-            <form onSubmit={onSubmit}>
-                <input type='text' name='username' placeholder='Name' className='input' value={formData.username} onChange={onChange} required />
-                <input type='email' name='email' placeholder='Email' className='input' value={formData.email} onChange={onChange} required />
-                <input type='password' name='password' placeholder='Password' className='input' value={formData.password} onChange={onChange} required />
-                <button typoe='submit'>Submit</button>
+        <div className='container bg-discord'>
+            <h2 className='mt-4'>Please Login Here...</h2>
+            <form onSubmit={onSubmit} className='form-group mt-3'>
+                <label>Enter Your Name</label>
+                <input type='text' name='username' className='input' value={formData.username} onChange={onChange} className='form-control mb-2' required />
+                <label>Enter Your Email</label>
+                <input type='email' name='email' className='input' value={formData.email} onChange={onChange} className='form-control mb-2' required />
+                <label>Set Your Password</label>
+                <input type='password' name='password' className='input' value={formData.password} onChange={onChange} className='form-control mb-2' required />
+                <button type='submit' className='btn btn-outline-primary'>Submit</button>
+                <Link to='/login'><button className='btn btn-link'>Already have an acoount! Log In</button></Link>
             </form>
-            <Link to='/login'>Already have an acoount! Log In</Link>
         </div>
     )
+    // eslint-disable-next-line
 }
 export default Register;

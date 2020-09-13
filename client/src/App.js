@@ -18,6 +18,13 @@ function App() {
     username: null,
     room: null
   })
+  let isSmall;
+    if(window.innerWidth >= 768) {
+        isSmall = true;
+    } else {
+        isSmall = false
+    }
+    const [navPos, setNavPos] = useState(isSmall)
 
   const currUser = async(formData) => {
     const config = {
@@ -59,17 +66,25 @@ function App() {
       console.log('A server error')
     }
   }
-  
+
+  const switchNav = (e) => {
+    e.preventDefault()
+    setNavPos(prevPos => !prevPos)
+}
+const test = () => {
+  console.log('xd')
+}
 
   return (
-    <div className="App">
+    <div className="App" style = {{height: '100vh'}}>
       <Router>
-        <Navbar />
+        <Navbar switchNav={switchNav} test={test} isSmall={isSmall} />
         <Switch>
           <Route exact path='/' component={WelcomeUser} />
           <Route exact path='/login' render={(props) => <Login {...props} redirect = { redirect } currUser = { currUser } />} />
           <Route exact path='/register' render={props => <Register {...props} registerUser = { registerUser }/> }/>
-          <Route exact path='/chat' render= {props => <ChatApp {...props} hasAuth={hasAuth} user={user} />} />
+          {/* <Route exact path='/chat' render= {props => <ChatApp {...props} hasAuth={hasAuth} user={user} />} /> */}
+          <Route exact path='/chat' render= {props => <ChatApp {...props} hasAuth={true} user={{username:'shreyansh', room:'kabuttargang'}} navPos={navPos} />} />
         </Switch>
       </Router>
     </div>

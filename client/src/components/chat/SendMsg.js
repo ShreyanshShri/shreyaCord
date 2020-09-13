@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-const SendMsg = ({ sendMsg }) => {
+const SendMsg = ({ sendMsg, darkTheme }) => {
     const [msg, setMessage] = useState('')
     
     const onChange = event =>{
@@ -11,11 +11,17 @@ const SendMsg = ({ sendMsg }) => {
         sendMsg(msg)
         setMessage('')
     }
+    let primaryTheme;
+    if(darkTheme) {
+        primaryTheme = 'white-text'
+    } else{
+        primaryTheme = 'dark-text'
+    }
     return (
         <div>
-            <form onSubmit={onSubmit}>
-                <input type='text' name='msg' onChange={onChange} value={msg} />
-                <input type='submit' value='Send' />
+            <form onSubmit={onSubmit} className='sendMsg mt-1'>
+                <input type='text' name='msg' placeholder='Enter Your Message...' className={`inp width-9 ${primaryTheme}`} onChange={onChange} value={msg} />
+                <input type='submit' value='Send' className='btn btn-primary ml-2' />
             </form>
         </div>
     )
