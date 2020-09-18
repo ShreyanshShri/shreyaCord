@@ -10,7 +10,7 @@ const emailExistence = require('email-existence')
 const Message = require('./models/Message')
 const User = require('./models/User')
 
-
+// connecnting to db
 const mongodbUrl = process.env.MONGODB_URI || 'mongodb://localhost/chatApp'
 
 mongoose.connect(mongodbUrl,
@@ -21,6 +21,7 @@ mongoose.connect(mongodbUrl,
 const server = http.createServer(app)
 const io = socketio(server)
 
+// url parsing
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
 
@@ -29,7 +30,7 @@ var users = []
 io.on('connection', socket => {
     // joining user to a room when it connects to server
     socket.on('joinRoom', async ({ username, room }) => {
-        // creating and connecting a user
+        // creating and joining a user
         const user = {
             id: socket.id,
             username,
@@ -39,10 +40,7 @@ io.on('connection', socket => {
 
         socket.join(user.room)
         
-        // welcoming
-        // io.to(user.room).emit('notify', 'Welcome to chatCord!')
         // notifying everyone
-        // socket.to(user.room).emit('notify', `${user.username} joined the chat`);
         socket.to(user.room).emit('message', {
             message: `${user.username} Joined The Chat`,
             username: 'Shreya-Bot',
@@ -60,7 +58,7 @@ io.on('connection', socket => {
         const roomUsers = users.filter(u => {
             return user.room == u.room
         })
-        
+        // sending room info
         io.to(user.room).emit('roomUsers', {
             room: user.room,
             users: roomUsers
@@ -115,6 +113,7 @@ io.on('connection', socket => {
     })
 })
 
+// registering a user
 app.post('/register', async(req, res) => {
     const {username, email, password, ip} = req.body
     const encryptedPass = await bcrypt.hash(password, 10)
@@ -140,6 +139,7 @@ app.post('/register', async(req, res) => {
     }
 })
 
+// user verification
 app.post('/login', async(req, res) => {
     const {email, password} = req.body
     
@@ -156,17 +156,13 @@ app.post('/login', async(req, res) => {
 
 })
 
+// running server
 const PORT = process.env.PORT || 5000;
 
 server.listen(PORT, () => console.log(`Server running on port ${PORT}`))
 
-// https://github.com/adrianhajdin/project_chat_application
-// https://github.com/bradtraversy/contact-keeper
-// https://cloud.mongodb.com/v2/5f61da4489dd402521c7c94d#clusters
-
 /*
-    todos-
-    * create the front end UI
-    * convert html to react
-    * make user login using passport
+Reference:
+    https://github.com/adrianhajdin/project_chat_application
+    https://github.com/bradtraversy/chatcord
 */

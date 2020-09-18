@@ -12,13 +12,16 @@ import WelcomeUser from './layout/WelcomeUser'
 import './App.css';
 
 function App() {
-
+  // creating component level state
   const [redirect, setRedirect] = useState(false)
   const [hasAuth, setAuth] = useState(false)
   const [user, setUser] = useState({
     username: null,
     room: null
   })
+  const [loading, setLoading] = useState(false)
+
+  // checking if user is using a phone or pc
   let isSmall;
     if(window.innerWidth >= 768) {
         isSmall = true;
@@ -26,7 +29,8 @@ function App() {
         isSmall = false
     }
     const [navPos, setNavPos] = useState(isSmall)
-    const [loading, setLoading] = useState(false)
+
+    // user login
   const currUser = async(formData) => {
     const config = {
       headers: {
@@ -58,6 +62,7 @@ function App() {
     }
   }
 
+  // registering user
   const registerUser = async (formData) => {
     const config = {
       headers: {
@@ -68,13 +73,15 @@ function App() {
     try {
       setLoading(true)
       const res = await axios.post('/register', formData, config)
-      setLoading(false)
-      swal({
-        title: "Success!",
-        text: 'Registered Successfully... Login to continue',
-        icon: "success",
-        button: "OK",
-      })
+      if(res.status === 200){
+        setLoading(false)
+        swal({
+          title: "Success!",
+          text: 'Registered Successfully... Login to continue',
+          icon: "success",
+          button: "OK",
+        })
+      }
     } catch (err) {
       setLoading(false)
       swal({

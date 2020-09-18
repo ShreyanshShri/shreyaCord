@@ -41,7 +41,7 @@ const Register = ({ registerUser, loading }) => {
         }
         
     }
-    // eslint-disable-next-line
+    
     return (
         <div className='container bg-discord'>
             {loading && <div className="spinner-border text-primary" role="status">
@@ -50,16 +50,18 @@ const Register = ({ registerUser, loading }) => {
             <h2 className='mt-4'>Please Register Here...</h2>
             <form onSubmit={onSubmit} className='form-group mt-3'>
                 <label>Enter Your Name</label>
+                {/* eslint-disable-next-line */}
                 <input type='text' name='username' className='input' value={formData.username} onChange={onChange} className='form-control mb-2' required />
                 <label>Enter Your Email</label>
+                {/* eslint-disable-next-line */}
                 <input type='email' name='email' className='input' value={formData.email} onChange={onChange} className='form-control mb-2' required />
                 <label>Set Your Password</label>
+                {/* eslint-disable-next-line */}
                 <input type='password' name='password' className='input' value={formData.password} onChange={onChange} className='form-control mb-2' required />
                 <button type='submit' className='btn btn-outline-primary'>Submit</button>
                 <Link to='/login'><button className='btn btn-link'>Already have an acoount! Log In</button></Link>
             </form>
         </div>
     )
-    // eslint-disable-next-line
 }
 export default Register;

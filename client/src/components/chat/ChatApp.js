@@ -30,6 +30,7 @@ const ChatApp = ({hasAuth, user, navPos}) => {
         // eslint-disable-next-line
     }, [])
 
+    // handling messages
     socket.on('message', (message) => {
         if(Array.isArray(message)){
                 setMsg(message)
@@ -38,12 +39,12 @@ const ChatApp = ({hasAuth, user, navPos}) => {
             audio.play()
         }
     })
-
+    // fetching room users info
     socket.on('roomUsers', ({room, users}) => {
         setRoom(room)
         setRoomUsers(users)
     })
-
+    // sending a message
     const sendMsg = (message) => {
         const msg = {
             message,
@@ -54,7 +55,7 @@ const ChatApp = ({hasAuth, user, navPos}) => {
             socket.emit('sendMessage', msg)
         }
     }
-
+    // switching b/w dark theme and light theme
     const switchTheme = () => {
         setDarkTheme(prevVal => !prevVal)
     }
@@ -66,11 +67,10 @@ const ChatApp = ({hasAuth, user, navPos}) => {
         primaryTheme = 'light'
     }
 
-
+    // checking if user has auth or not
     if(hasAuth){
         return (
             <Fragment>
-                {/* <button className='btn btn-outline-success' onClick={switchNav}>Switch</button>     */}
                 <div className={`container-less height-9 ${primaryTheme}`}>
                 <div className='row'>
                     <RoomInfo currentRoom={currentRoom} roomUsers={roomUsers} navPos = {navPos} darkTheme={darkTheme} switchTheme={switchTheme}/>

@@ -10,7 +10,8 @@ const Navbar = ({title, switchNav, isSmall}) => {
         } else {
             setShowBtn(false)
         }
-    }, [window.location.href])
+        // eslint-disable-next-line
+    }, [])
     
     const btnStyle = {
         background:'none',

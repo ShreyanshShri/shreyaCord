@@ -1,6 +1,4 @@
 import React from 'react'
-import { Link, animateScroll } from "react-scroll"
-import ScrollToBottom from 'react-scroll-to-bottom'
 
 import Message from './Message'
 import SendMsg from './SendMsg'
@@ -41,14 +39,6 @@ const Chats = ({oldMessages, newMessages, sendMsg, darkTheme}) => {
             <SendMsg sendMsg ={sendMsg} darkTheme={darkTheme} />
         </div>
     )
-
-  //   return (
-  //     <ScrollToBottom className={`col-sm-12 col-md-10 col-lg-9 bg-discord messages ${primaryTheme}`}>
-  //         {oldMsgs}
-  //         {newMsgs}
-  //         {/* <SendMsg sendMsg ={sendMsg} darkTheme={darkTheme} /> */}
-  //     </ScrollToBottom>
-  // )
 }
 
 export default Chats
