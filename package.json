@@ -5,14 +5,13 @@
   "main": "server.js",
   "scripts": {
     "server": "nodemon server.js",
-    "heroku-postbuild":"NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client"
+    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client"
   },
   "author": "Shreyansh",
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^5.0.0",
     "dotenv": "^8.2.0",
-    "email-existence": "^0.1.6",
     "express": "^4.17.1",
     "moment": "^2.27.0",
     "mongoose": "^5.10.1",

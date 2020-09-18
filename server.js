@@ -6,7 +6,6 @@ const app = express()
 const moment = require('moment')
 const mongoose = require('mongoose')
 const bcrypt = require('bcrypt')
-const emailExistence = require('email-existence')
 const path = require('path')
 const Message = require('./models/Message')
 const User = require('./models/User')
@@ -119,10 +118,8 @@ app.post('/register', async(req, res) => {
     const {username, email, password, ip} = req.body
     const encryptedPass = await bcrypt.hash(password, 10)
 
-    const emailExists = await emailExistence.check(email)
     const userExists = await User.findOne({ email : email })
 
-    if(!emailExists) return res.status(400).json({message: 'Plz enter a valid email'})
     if(userExists) return res.status(400).json({message: 'User Already exists'})
     
     const user = new User({
