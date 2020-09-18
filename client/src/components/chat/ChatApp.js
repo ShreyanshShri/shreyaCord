@@ -4,15 +4,19 @@ import {Link} from 'react-router-dom'
 
 import RoomInfo from './RoomInfo'
 import Chats from './Chats'
+import ding from '../../sounds/ding-sound-effect_2.mp3'
 
 let socket
 
 const ChatApp = ({hasAuth, user, navPos}) => {
     const {username, room} = user;
-    const [messages, addMsg] = useState([])
+    const [oldMessages, setMsg] = useState([])
+    const [newMessages, addMsg] = useState([])
     const [currentRoom, setRoom] = useState(null)
     const [darkTheme, setDarkTheme] = useState(false)
     const [roomUsers, setRoomUsers] = useState([])
+    
+    const audio = new Audio(ding)
     
 
     socket = io('http://localhost:5000')
@@ -28,17 +32,14 @@ const ChatApp = ({hasAuth, user, navPos}) => {
 
     socket.on('message', (message) => {
         if(Array.isArray(message)){
-                addMsg(message)
+                setMsg(message)
         } else {
             addMsg(prevMessages => [...prevMessages, message ])
+            audio.play()
         }
     })
 
     socket.on('roomUsers', ({room, users}) => {
-        // console.log('got room info')
-        // console.log(room, users)
-        console.log('triggerd')
-        console.log(users)
         setRoom(room)
         setRoomUsers(users)
     })
@@ -49,12 +50,13 @@ const ChatApp = ({hasAuth, user, navPos}) => {
             username,
             room
         }
-        socket.emit('sendMessage', msg)
+        if(message !== ''){
+            socket.emit('sendMessage', msg)
+        }
     }
 
     const switchTheme = () => {
         setDarkTheme(prevVal => !prevVal)
-        console.log(darkTheme)
     }
 
     let primaryTheme;
@@ -71,9 +73,8 @@ const ChatApp = ({hasAuth, user, navPos}) => {
                 {/* <button className='btn btn-outline-success' onClick={switchNav}>Switch</button>     */}
                 <div className={`container-less height-9 ${primaryTheme}`}>
                 <div className='row'>
-                    {/* <a href = '/'>Leave Room</a> */}
                     <RoomInfo currentRoom={currentRoom} roomUsers={roomUsers} navPos = {navPos} darkTheme={darkTheme} switchTheme={switchTheme}/>
-                    <Chats messages = {messages} sendMsg ={sendMsg} darkTheme={darkTheme} />
+                    <Chats oldMessages = {oldMessages} newMessages = {newMessages} sendMsg ={sendMsg} darkTheme={darkTheme} />
                 </div>
                 </div>
             </Fragment>

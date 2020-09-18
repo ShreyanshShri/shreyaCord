@@ -4,7 +4,7 @@ body{
   /* overflow: hidden; */
 }
 .h-10{
-  height: 10vh;
+  min-height: 10vh;
 }
 .h-90{
   height: 90vh;
@@ -120,10 +120,14 @@ option {
 }
 .inp {
   border: none;
+  min-height: 5vh;
   border-bottom: 2px solid rgb(175, 36, 255);
   padding-bottom: 6px;
   background: none;
   color: white;
+}
+.sendBtn{
+  width: 7%;
 }
 .inp:focus{
   border: none;
@@ -131,7 +135,11 @@ option {
   outline: none;
   background: none;
 }
-
+.spinner-border{
+  position: absolute;
+  top: 45%;
+  left: 45%;
+}
 
 .dark-primary {
   color: white;
@@ -168,6 +176,16 @@ option {
 .white-text{
   color: white;
 }
+.btn-outline-primary{
+  color: rgb(175, 36, 255);
+  border-color: rgb(175, 36, 255);
+  background: none;
+}
+.btn-outline-primary:hover{
+  color: white;
+  background: rgb(175, 36, 255);
+  border-color: rgb(175, 36, 255);
+}
 .dark-text{
   color: black;
 }
@@ -177,3 +195,11 @@ option {
 .list-group-item{
   background: none !important;
 }
+.react-scroll-to-bottom--css-flgmf-1n7m0yu{
+  overflow-x: hidden;
+}
+/* @media (max-width: 600px) {
+  .inp {
+    width: 87%;
+  }
+} */

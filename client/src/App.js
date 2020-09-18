@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import axios from 'axios'
+import swal from 'sweetalert'
 
 import Navbar from './layout/Navbar';
 import Login from './components/user/Login'
@@ -25,7 +26,7 @@ function App() {
         isSmall = false
     }
     const [navPos, setNavPos] = useState(isSmall)
-
+    const [loading, setLoading] = useState(false)
   const currUser = async(formData) => {
     const config = {
       headers: {
@@ -34,21 +35,26 @@ function App() {
     }
     
     try {
+      setLoading(true)
       const res = await axios.post('/login', formData, config)
-      console.log(res)
+      setLoading(false)
       if(res.status === 200) {
         setAuth(true)
         setUser({
           username: res.data.username,
           room: formData.room
         })
+        setLoading(true)
         setRedirect(true)
-      } else {
-        console.log('invalid credentials and plz add a alert for this')
       }
-      
     } catch (err) {
-      console.log('A server error')
+      setLoading(false)
+      swal({
+        title: "Error !",
+        text: 'Invalid Credentials',
+        icon: "error",
+        button: "Try Again",
+      })
     }
   }
 
@@ -60,10 +66,23 @@ function App() {
     }
 
     try {
+      setLoading(true)
       const res = await axios.post('/register', formData, config)
-      console.log(res)
+      setLoading(false)
+      swal({
+        title: "Success!",
+        text: 'Registered Successfully... Login to continue',
+        icon: "success",
+        button: "OK",
+      })
     } catch (err) {
-      console.log('A server error')
+      setLoading(false)
+      swal({
+        title: "Error !",
+        text: 'User Already Exists',
+        icon: "error",
+        button: "Try Again",
+      })
     }
   }
 
@@ -71,20 +90,16 @@ function App() {
     e.preventDefault()
     setNavPos(prevPos => !prevPos)
 }
-const test = () => {
-  console.log('xd')
-}
 
   return (
     <div className="App" style = {{height: '100vh'}}>
       <Router>
-        <Navbar switchNav={switchNav} test={test} isSmall={isSmall} />
+        <Navbar switchNav={switchNav} isSmall={isSmall} />
         <Switch>
           <Route exact path='/' component={WelcomeUser} />
-          <Route exact path='/login' render={(props) => <Login {...props} redirect = { redirect } currUser = { currUser } />} />
-          <Route exact path='/register' render={props => <Register {...props} registerUser = { registerUser }/> }/>
-          {/* <Route exact path='/chat' render= {props => <ChatApp {...props} hasAuth={hasAuth} user={user} />} /> */}
-          <Route exact path='/chat' render= {props => <ChatApp {...props} hasAuth={true} user={{username:'shreyansh', room:'kabuttargang'}} navPos={navPos} />} />
+          <Route exact path='/login' render={(props) => <Login {...props} loading = {loading} redirect = { redirect } currUser = { currUser } />} />
+          <Route exact path='/register' render={props => <Register {...props} loading = {loading} registerUser = { registerUser }/> }/>
+          <Route exact path='/chat' render= {props => <ChatApp {...props} hasAuth={hasAuth} user={user} />} navPos={navPos} />
         </Switch>
       </Router>
     </div>

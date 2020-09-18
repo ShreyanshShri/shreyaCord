@@ -1,13 +1,24 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import {Link} from 'react-router-dom'
+import axios from 'axios'
 
-const Register = ({ registerUser }) => {
+const Register = ({ registerUser, loading }) => {
 
     const [formData, setFormData] = useState({
         username: '',
         email: '',
         password: ''
     })
+
+    const [ip, setIp] = useState('')
+
+    useEffect(() => {
+        axios.get('https://api6.ipify.org?format=json')
+        .then(res => {
+            setIp(res.data.ip)
+        })
+    // eslint-disable-next-line
+    }, [])
 
     const onChange = event => {
         setFormData({
@@ -18,17 +29,25 @@ const Register = ({ registerUser }) => {
 
     const onSubmit = event => {
         event.preventDefault()
-        registerUser(formData)
-        setFormData({
-            username: '',
-            email: '',
-            password: ''
-        })
+        if(ip !== ''){
+            registerUser({...formData, ip:ip})
+            setFormData({
+                username: '',
+                email: '',
+                password: ''
+            })
+        } else {
+            alert('An error occured')
+        }
+        
     }
     // eslint-disable-next-line
     return (
         <div className='container bg-discord'>
-            <h2 className='mt-4'>Please Login Here...</h2>
+            {loading && <div className="spinner-border text-primary" role="status">
+            <span className="sr-only">Loading...</span>
+            </div>}
+            <h2 className='mt-4'>Please Register Here...</h2>
             <form onSubmit={onSubmit} className='form-group mt-3'>
                 <label>Enter Your Name</label>
                 <input type='text' name='username' className='input' value={formData.username} onChange={onChange} className='form-control mb-2' required />

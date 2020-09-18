@@ -1,10 +1,13 @@
 import React from 'react'
+import { Link, animateScroll } from "react-scroll"
+import ScrollToBottom from 'react-scroll-to-bottom'
 
 import Message from './Message'
 import SendMsg from './SendMsg'
+import AllMessages from './AllMessages'
 
-const Chats = ({messages, sendMsg, darkTheme}) => {
-  const msgs = messages.map((message, index) => {
+const Chats = ({oldMessages, newMessages, sendMsg, darkTheme}) => {
+  const oldMsgs = oldMessages.map((message, index) => {
     return (
       <Message
         key = {index}
@@ -14,6 +17,16 @@ const Chats = ({messages, sendMsg, darkTheme}) => {
       />
     );
 })
+    const newMsgs = newMessages.map((message, index) => {
+      return (
+        <Message
+          key = {index}
+          username = {message.username}
+          message = {message.message}
+          time = {message.time}
+        />
+      );
+    })
 
     let primaryTheme;
     if(darkTheme) {
@@ -24,12 +37,18 @@ const Chats = ({messages, sendMsg, darkTheme}) => {
 
     return (
         <div className={`col-sm-12 col-md-10 col-lg-9 bg-discord message-box ${primaryTheme}`}>
-          <div className='messages'>
-            {msgs}
-          </div>
+            <AllMessages oldMsgs={oldMsgs} newMsgs={newMsgs} />
             <SendMsg sendMsg ={sendMsg} darkTheme={darkTheme} />
         </div>
     )
+
+  //   return (
+  //     <ScrollToBottom className={`col-sm-12 col-md-10 col-lg-9 bg-discord messages ${primaryTheme}`}>
+  //         {oldMsgs}
+  //         {newMsgs}
+  //         {/* <SendMsg sendMsg ={sendMsg} darkTheme={darkTheme} /> */}
+  //     </ScrollToBottom>
+  // )
 }
 
 export default Chats

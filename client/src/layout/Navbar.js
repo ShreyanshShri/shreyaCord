@@ -1,16 +1,31 @@
-import React from 'react'
-// import { Link } from 'react-router-dom'
+import React,{useState, useEffect} from 'react'
 import PropTypes from 'prop-types' 
 
-const Navbar = ({title, icon, switchNav, isSmall}) => {
+const Navbar = ({title, switchNav, isSmall}) => {
+    const [showBtn, setShowBtn] = useState(false)
+    useEffect(() => {
+        const url = window.location.href;
+        if(url.includes("/chat")){
+            setShowBtn(true)
+        } else {
+            setShowBtn(false)
+        }
+    }, [window.location.href])
+    
+    const btnStyle = {
+        background:'none',
+        border:'none',
+        outline:'none',
+        color:'white'
+    }
+
     return (
         <div>
             <nav className="navbar navbar-dark bg-purple h-10">
             <a className="navbar-brand" href="/">
-                <i className='fa fa-discord' />
                 <span style = {{fontSize:'130%'}} className='ml-2'>{title}</span>
             </a>
-                {isSmall ? null : <button onClick={switchNav}>SwitchNav</button>}
+                {!isSmall && showBtn ? <button onClick={switchNav} style={btnStyle} className='mr-2'><i className='fa fa-bars' /></button> : null}
             </nav>
         </div>
     )
@@ -18,14 +33,12 @@ const Navbar = ({title, icon, switchNav, isSmall}) => {
 
 Navbar.propTypes = {
     title: PropTypes.string.isRequired,
-    icon: PropTypes.string,
     isSmall: PropTypes.bool.isRequired,
     switchNav: PropTypes.func
   }
   
   Navbar.defaultProps = {
-    title: 'ChatCord',
-    icon: 'fas fa-id-card-alt'
+    title: 'ShreyaCord'
   }
 
 export default Navbar

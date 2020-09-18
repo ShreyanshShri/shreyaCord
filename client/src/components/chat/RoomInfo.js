@@ -7,6 +7,14 @@ const RoomInfo = ({currentRoom, roomUsers, navPos, switchTheme, darkTheme}) => {
         )
     })
 
+    if(currentRoom === 'kabuttargang'){
+        currentRoom = 'Kabuttar Gang'
+    } else if (currentRoom === 'soloindia') {
+        currentRoom = 'SoloIndia'
+    } else if (currentRoom === 'solofamily') {
+        currentRoom = 'SoloFamily'
+    }
+
     let pos, primaryTheme;
     if(navPos) {
         pos = 'translate-positive'

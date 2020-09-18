@@ -21,7 +21,7 @@ const SendMsg = ({ sendMsg, darkTheme }) => {
         <div>
             <form onSubmit={onSubmit} className='sendMsg mt-1'>
                 <input type='text' name='msg' placeholder='Enter Your Message...' className={`inp width-9 ${primaryTheme}`} onChange={onChange} value={msg} />
-                <input type='submit' value='Send' className='btn btn-primary ml-2' />
+                <button type='submit' className='btn-outline-primary ml-2 sendBtn' style={{border:'none', outline:'none', padding:'5px'}}><i className='fa fa-paper-plane fa-2x' /></button>
             </form>
         </div>
     )

@@ -1,11 +1,11 @@
 import React, {useState} from 'react'
 import {Redirect, Link} from 'react-router-dom'
 
-const Login = ({currUser, redirect}) => {
+const Login = ({currUser, redirect, loading}) => {
     const [user, setUser] = useState({
         email:'',
         password:'',
-        room:'soloindia'
+        room:'solofamily'
     })
     const onChange = event => {
         setUser({
@@ -16,27 +16,29 @@ const Login = ({currUser, redirect}) => {
 
     const onSubmit = event => {
         event.preventDefault()
-        console.log(user)
         currUser(user)
-        // setUser({
-        //     email:'',
-        //     password:'',
-        //     room:''
-        // })
+        setUser({
+            email:'',
+            password:'',
+            room:'solofamily'
+        })
     }
 
     return (
         <div className='container bg-discord'>
+            {loading && <div className="spinner-border text-primary" role="status">
+            <span className="sr-only">Loading...</span>
+            </div>}
             <h2 className='mt-4'>Please Login Here...</h2>
             <form onSubmit={onSubmit} className='form-group mt-3'>
                 <label>Enter your Email</label>
                 <input type='text' name='email' value={user.email} onChange={onChange} className='form-control mb-3' />
                 <label>Enter your password</label>
-                <input type='text' name='password' value={user.password} onChange={onChange} className='form-control mb-3' />
+                <input type='password' name='password' value={user.password} onChange={onChange} className='form-control mb-3' />
                 <label>Select your room</label>
                 <select value={user.room} onChange={onChange} name='room' className="btn btn-secondary ml-3">
-                    <option className='dropdown-item' value="solofamily">SoloFamily</option>
-                    <option className='dropdown-item' selected value="soloindia">SoloIndia</option>
+                    <option className='dropdown-item' value="solofamily">SoloFamily [English]</option>
+                    <option className='dropdown-item' selected value="soloindia">SoloIndia [Hindi]</option>
                     <option className='dropdown-item' value="kabuttargang">Kabuttar gang</option>
                 </select>
                 <br /><br />
