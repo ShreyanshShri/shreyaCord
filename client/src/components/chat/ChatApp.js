@@ -19,7 +19,7 @@ const ChatApp = ({hasAuth, user, navPos}) => {
     const audio = new Audio(ding)
     
 
-    socket = io('http://localhost:5000')
+    socket = io('http://shreyacord.herokuapp.com')
 
 
     // joining the user
@@ -36,7 +36,9 @@ const ChatApp = ({hasAuth, user, navPos}) => {
                 setMsg(message)
         } else {
             addMsg(prevMessages => [...prevMessages, message ])
-            audio.play()
+            if(message.username !== username){
+                audio.play()
+            }
         }
     })
     // fetching room users info

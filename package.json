@@ -4,7 +4,8 @@
   "description": "A simple chat app with socketIo",
   "main": "server.js",
   "scripts": {
-    "server": "nodemon server.js"
+    "server": "nodemon server.js",
+    "heroku-postbuild":"NPM_CONFIG_PRODUCTION=false npm install --previx client && npm run build --prefix client"
   },
   "author": "Shreyansh",
   "license": "ISC",

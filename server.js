@@ -7,6 +7,7 @@ const moment = require('moment')
 const mongoose = require('mongoose')
 const bcrypt = require('bcrypt')
 const emailExistence = require('email-existence')
+const path = require('path')
 const Message = require('./models/Message')
 const User = require('./models/User')
 
@@ -155,6 +156,17 @@ app.post('/login', async(req, res) => {
             }
 
 })
+
+
+// Serve our React app as static folder
+if(process.env.NODE_ENV === 'production'){
+    app.use(express.static('client/build'))
+
+    app.get('*', (req, res) => {
+        res.sendFile(path.resolve(__dirname, 'client', 'bulid', 'index.html'))
+    })
+}
+
 
 // running server
 const PORT = process.env.PORT || 5000;
