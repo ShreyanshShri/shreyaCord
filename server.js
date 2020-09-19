@@ -21,7 +21,7 @@ mongoose.connect(mongodbUrl,
 const server = http.createServer(app)
 const io = socketio(server)
 
-// url parsing
+// data parsing
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
 
@@ -154,6 +154,9 @@ app.post('/login', async(req, res) => {
 
 })
 
+app.get('/test', (req, res) => {
+    res.json({msg: 'ghanta'})
+})
 
 // Serve our React app as static folder
 if(process.env.NODE_ENV === 'production'){
