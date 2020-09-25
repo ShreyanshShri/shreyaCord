@@ -24,9 +24,9 @@ function App() {
   // checking if user is using a phone or pc
   let isSmall;
     if(window.innerWidth >= 768) {
-        isSmall = false;
+        isSmall = true;
     } else {
-        isSmall = true
+        isSmall = false
     }
     const [navPos, setNavPos] = useState(isSmall)
     console.log(navPos)
