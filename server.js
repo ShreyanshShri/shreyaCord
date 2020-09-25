@@ -9,25 +9,27 @@ const bcrypt = require('bcrypt')
 const path = require('path')
 
 // connecnting to db
-const mongodbUrl = process.env.MONGODB_URI || 'mongodb://localhost/chatApp'
+const mongodbUrl = 'mongodb+srv://Shreya:@Shreya7761@cluster0.zzfk5.mongodb.net/Cluster0?retryWrites=true&w=majority'
+
+// || 'mongodb://localhost/chatApp'
 
 const connectionOptions = {
     useNewUrlParser:true, 
     useUnifiedTopology: true, 
     useCreateIndex: true 
 }
-// try {
-//     mongoose.connect(mongodbUrl, connectionOptions)
-//     const db = mongoose.connection;
-//     // db.on('error', () => console.log('Error occured while Connecting to DB'))
-//     db.once('open', () => console.log('Successfully connected to Database'))
-// } catch (err) {
-//     console.log(err)
-// }
+try {
+    mongoose.connect(mongodbUrl, connectionOptions)
+    const db = mongoose.connection;
+    db.on('error', () => console.log('Error occured while Connecting to DB'))
+    db.once('open', () => console.log('Successfully connected to Database'))
+} catch (err) {
+    console.log(err)
+}
 
-mongoose.connect(mongodbUrl, connectionOptions, () => {
-    console.log('Successfully connected to db')
-})
+// mongoose.connect(mongodbUrl, connectionOptions, () => {
+//     console.log('Successfully connected to db')
+// })
 
 const Message = require('./models/Message')
 const User = require('./models/User')
