@@ -9,9 +9,7 @@ const bcrypt = require('bcrypt')
 const path = require('path')
 
 // connecnting to db
-const mongodbUrl = 'mongodb+srv://Shreya:@Shreya7761@cluster0.zzfk5.mongodb.net/Cluster0?retryWrites=true&w=majority'
-
-// || 'mongodb://localhost/chatApp'
+const mongodbUrl = process.env.MONGODB_URI || 'mongodb://localhost/chatApp';
 
 const connectionOptions = {
     useNewUrlParser:true, 
@@ -26,10 +24,6 @@ try {
 } catch (err) {
     console.log(err)
 }
-
-// mongoose.connect(mongodbUrl, connectionOptions, () => {
-//     console.log('Successfully connected to db')
-// })
 
 const Message = require('./models/Message')
 const User = require('./models/User')

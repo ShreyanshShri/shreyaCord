@@ -19,7 +19,7 @@ const ChatApp = ({hasAuth, user, navPos}) => {
     const audio = new Audio(ding)
     
 
-    socket = io('http://shreyacord.herokuapp.com')
+    socket = io('http://localhost:5000')
 
 
     // joining the user
