@@ -7,16 +7,24 @@ const moment = require('moment')
 const mongoose = require('mongoose')
 const bcrypt = require('bcrypt')
 const path = require('path')
-const Message = require('./models/Message')
-const User = require('./models/User')
 
 // connecnting to db
 const mongodbUrl = process.env.MONGODB_URI || 'mongodb://localhost/chatApp'
 
-mongoose.connect(mongodbUrl,
-{useNewUrlParser:true, useUnifiedTopology: true, useCreateIndex: true },()=>{
-    console.log("Successfully Connected to Database")
-})
+const connectionOptions = {
+    useNewUrlParser:true, 
+    useUnifiedTopology: true, 
+    useCreateIndex: true 
+}
+
+mongoose.connect(mongodbUrl, connectionOptions)
+
+const db = mongoose.connection;
+db.on('error', () => console.log('Error occured while Connecting to DB'))
+db.once('open', () => console.log('Successfully connected to Database'))
+
+const Message = require('./models/Message')
+const User = require('./models/User')
 
 const server = http.createServer(app)
 const io = socketio(server)
@@ -152,10 +160,6 @@ app.post('/login', async(req, res) => {
                 return res.status(400).json({message: 'Invalid Credientials'})
             }
 
-})
-
-app.get('/test', (req, res) => {
-    res.json({msg: 'ghanta'})
 })
 
 // Serve our React app as static folder
