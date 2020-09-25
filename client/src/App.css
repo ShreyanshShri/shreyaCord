@@ -198,8 +198,8 @@ option {
 .react-scroll-to-bottom--css-flgmf-1n7m0yu{
   overflow-x: hidden;
 }
-/* @media (max-width: 600px) {
+@media (max-width: 600px) {
   .inp {
     width: 87%;
   }
-} */
+}

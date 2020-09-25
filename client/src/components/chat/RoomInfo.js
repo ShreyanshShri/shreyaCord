@@ -13,6 +13,8 @@ const RoomInfo = ({currentRoom, roomUsers, navPos, switchTheme, darkTheme}) => {
         currentRoom = 'SoloIndia'
     } else if (currentRoom === 'solofamily') {
         currentRoom = 'SoloFamily'
+    } else {
+        currentRoom='Fetching Data'
     }
 
     let pos, primaryTheme;
