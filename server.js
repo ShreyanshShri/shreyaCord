@@ -16,12 +16,15 @@ const connectionOptions = {
     useUnifiedTopology: true, 
     useCreateIndex: true 
 }
+try {
+    mongoose.connect(mongodbUrl, connectionOptions)
+    const db = mongoose.connection;
+    // db.on('error', () => console.log('Error occured while Connecting to DB'))
+    db.once('open', () => console.log('Successfully connected to Database'))
+} catch (err) {
+    console.log(err)
+}
 
-mongoose.connect(mongodbUrl, connectionOptions)
-
-const db = mongoose.connection;
-db.on('error', () => console.log('Error occured while Connecting to DB'))
-db.once('open', () => console.log('Successfully connected to Database'))
 
 const Message = require('./models/Message')
 const User = require('./models/User')
