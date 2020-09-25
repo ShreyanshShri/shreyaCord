@@ -22,14 +22,14 @@ function App() {
   const [loading, setLoading] = useState(false)
 
   // checking if user is using a phone or pc
-  let isSmall;
+  let isSmall = false;
     if(window.innerWidth >= 768) {
         isSmall = true;
     } else {
         isSmall = false
     }
     const [navPos, setNavPos] = useState(isSmall)
-
+    console.log(navPos)
     // user login
   const currUser = async(formData) => {
     const config = {
@@ -106,7 +106,7 @@ function App() {
           <Route exact path='/' component={WelcomeUser} />
           <Route exact path='/login' render={(props) => <Login {...props} loading = {loading} redirect = { redirect } currUser = { currUser } />} />
           <Route exact path='/register' render={props => <Register {...props} loading = {loading} registerUser = { registerUser }/> }/>
-          <Route exact path='/chat' render= {props => <ChatApp {...props} hasAuth={hasAuth} user={user} />} navPos={navPos} />
+          <Route exact path='/chat' render= {props => <ChatApp {...props} hasAuth={hasAuth} user={user} navPos={navPos} />} />
         </Switch>
       </Router>
     </div>
