@@ -22,11 +22,11 @@ function App() {
   const [loading, setLoading] = useState(false)
 
   // checking if user is using a phone or pc
-  let isSmall = false;
+  let isSmall;
     if(window.innerWidth >= 768) {
-        isSmall = true;
+        isSmall = false;
     } else {
-        isSmall = false
+        isSmall = true
     }
     const [navPos, setNavPos] = useState(isSmall)
     console.log(navPos)
@@ -55,7 +55,7 @@ function App() {
       setLoading(false)
       swal({
         title: "Error !",
-        text: 'Invalid Credentials',
+        text: `${err.response.data.message}`,
         icon: "error",
         button: "Try Again",
       })
@@ -73,20 +73,11 @@ function App() {
     try {
       setLoading(true)
       const res = await axios.post('/register', formData, config)
-      if(res.status === 200){
-        setLoading(false)
-        swal({
-          title: "Success!",
-          text: 'Registered Successfully... Login to continue',
-          icon: "success",
-          button: "OK",
-        })
-      }
     } catch (err) {
       setLoading(false)
       swal({
         title: "Error !",
-        text: 'User Already Exists',
+        text: `${err.response.data.message}`,
         icon: "error",
         button: "Try Again",
       })

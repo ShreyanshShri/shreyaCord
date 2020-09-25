@@ -26,7 +26,7 @@ const Navbar = ({title, switchNav, isSmall}) => {
             <a className="navbar-brand" href="/">
                 <span style = {{fontSize:'130%'}} className='ml-2'>{title}</span>
             </a>
-                {!isSmall && showBtn ? <button onClick={switchNav} style={btnStyle} className='mr-2'><i className='fa fa-bars' /></button> : null}
+                {isSmall && showBtn ? <button onClick={switchNav} style={btnStyle} className='mr-2'><i className='fa fa-bars' /></button> : null}
             </nav>
         </div>
     )
